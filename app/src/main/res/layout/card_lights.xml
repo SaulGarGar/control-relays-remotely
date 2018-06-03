@@ -15,12 +15,14 @@
         android:layout_margin="10dp">
 
         <ImageView
+            android:id="@+id/image_light"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:src="@drawable/ic_light_on"/>
 
         <TextView
+            android:id="@+id/text_light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Luz de la recamara principal"

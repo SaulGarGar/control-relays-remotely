@@ -8,10 +8,12 @@ public class Light {
 
     private Boolean state;
     private String id;
+    private String name;
 
-    public Light(Boolean state, String id) {
+    public Light(Boolean state, String id, String name) {
         this.state = state;
         this.id = id;
+        this.name = name;
     }
 
     public Boolean getState() {
@@ -28,5 +30,13 @@ public class Light {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

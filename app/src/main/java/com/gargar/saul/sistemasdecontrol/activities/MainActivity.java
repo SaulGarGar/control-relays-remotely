@@ -55,14 +55,14 @@ public class MainActivity extends AppCompatActivity {
                if (light.getState()){
 
                    light.setState(false);
-                   refLuz.setValue("false");
+                   refLuz.setValue(false);
                    progressBar.setVisibility(View.INVISIBLE);
 
                }
                else {
 
                    light.setState(true);
-                   refLuz.setValue("true");
+                   refLuz.setValue(true);
                    progressBar.setVisibility(View.INVISIBLE);
                }
             }
@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                Boolean state = Boolean.valueOf(dataSnapshot.getValue(String.class));
-                light.setState(state);
+                //Boolean state = Boolean.valueOf(dataSnapshot.getValue(String.class));
+                light.setState(dataSnapshot.getValue(Boolean.class));
                 setDataLigth(light);
             }
 

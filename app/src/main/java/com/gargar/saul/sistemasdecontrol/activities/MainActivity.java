@@ -1,6 +1,7 @@
 package com.gargar.saul.sistemasdecontrol.activities;
 
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -13,8 +14,11 @@ import android.widget.TextView;
 
 import com.gargar.saul.sistemasdecontrol.R;
 import com.gargar.saul.sistemasdecontrol.models.Light;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,9 +30,10 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fabLight;
 
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference ref = database.getReference("luces/luz_sala");
+    private DatabaseReference ref = database.getReference("luces");
+    private DatabaseReference refLuz = database.getReference("home/luces/luz_sala");
 
-    private Light light = new Light(true, "1", "Luz de la sala");
+    private Light light = new Light(false, "1", "Luz de la sala");
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -48,17 +53,33 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                if (light.getState()){
+
                    light.setState(false);
+                   refLuz.setValue("false");
+                   progressBar.setVisibility(View.INVISIBLE);
 
-                   setDataLigth(light);
-
-                   //ref.child("luces").child(luz_sala)
                }
                else {
-                   light.setState(true);
 
-                   setDataLigth(light);
+                   light.setState(true);
+                   refLuz.setValue("true");
+                   progressBar.setVisibility(View.INVISIBLE);
                }
+            }
+        });
+
+        refLuz.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                Boolean state = Boolean.valueOf(dataSnapshot.getValue(String.class));
+                light.setState(state);
+                setDataLigth(light);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
 
@@ -66,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         setDataLigth(light);
 
     }
+
 
     public void setToolbar(){
         toolbar.setTitle(light.getName());
@@ -80,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
             lightImage.setImageDrawable(getDrawable(R.drawable.ic_light_on));
             lightState.setText("Encendido");
             fabLight.setImageResource(R.drawable.ic_light_off);
+
         }
         else {
             lightImage.setImageDrawable(getDrawable(R.drawable.ic_light_off));

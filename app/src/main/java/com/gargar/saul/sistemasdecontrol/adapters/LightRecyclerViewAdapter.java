@@ -34,7 +34,6 @@ public class LightRecyclerViewAdapter extends RecyclerView.Adapter<LightRecycler
             super(itemView);
 
             imageLight = (ImageView) itemView.findViewById(R.id.image_light);
-            textLight = (TextView) itemView.findViewById(R.id.text_light);
 
         }
     }
